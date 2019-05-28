@@ -11,6 +11,52 @@
   <div>
     <i class="text-muted fas fa-tag"></i>
     &nbsp;
-    {{musica.genero.nome}}
+    <a [routerLink]="['/generos', musica.genero.id]">{{musica.genero.nome}}</a>
   </div>
+
+  <div>
+    <button type="button" class="btn btn-success" (click)="disco.gostei(musica)">Gostei</button> {{ musica.like }}
+    <button type="button" class="btn btn-danger" (click)="disco.nao_gostei(musica)">Não Gostei</button> {{ musica.dislike }}
+  </div>
+</section>
+
+<br>
+
+<section *ngIf="musica.like">
+  <h2>Sugestões de músicas semelhantes</h2>
+  <h3> Participações com outros artistas:</h3>
+  <span *ngFor="let artista of musica.artistas">
+    <span *ngFor="let musica of disco.listaDeMusicasDoArtista(artista.nome)">
+      {{ musica.titulo }}
+    </span>
+    <br>
+  </span>
+  <span *ngFor="let genero of disco.listaDeGeneros()">
+      <span *ngIf="genero.nome === musica.genero.nome">
+        <p *ngFor="let musica of genero.musicas">
+          {{ musica.titulo }}
+        </p>
+      </span>
+    </span>
+</section>
+<section *ngIf="musica.dislike">
+    <h2>Sugestões de músicas diferentes</h2>
+  <h3>Outros Artistas:</h3>
+  <span *ngFor="let artista of musica.artistas">
+    <span *ngFor="let artis of disco.listaDeArtistas()">
+      <span *ngIf="artis.nome !== artista.nome">
+        <span *ngFor="let musica of disco.listaDeMusicasDoArtista(artis.nome)">
+          {{ musica.titulo }}<br>
+        </span>
+      </span>
+    </span>
+  </span>
+  <h3>Outro Gênero:</h3>
+  <span *ngFor="let genero of disco.listaDeGeneros()">
+    <span *ngIf="genero.nome !== musica.genero.nome">
+      <div *ngFor="let musica of genero.musicas">
+        {{ musica.titulo }}
+      </div>
+    </span>
+  </span>
 </section>

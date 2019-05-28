@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { isNumber, isString, isObject } from 'util';
+import { MusicaComponent } from './musica/musica.component';
 
 @Injectable({
   providedIn: 'root'
@@ -129,7 +130,9 @@ export class DiscoService {
       id: this.musicas.length + 1,
       titulo,
       idGenero: g.id,
-      artistas: listaArtistas
+      artistas: listaArtistas,
+      like: 0,
+      dislike: 0
     };
     this.musicas.push(musica);
     return musica;
@@ -242,5 +245,19 @@ export class DiscoService {
       this.preencherObjetoArtista(artista);
     }
     return this.artistas;
+  }
+
+  gostei(musica){
+    if (musica.like == 0){
+      musica.like += 1
+    }
+    musica.dislike = 0
+  }
+
+  nao_gostei(musica){
+    if (musica.dislike == 0){
+      musica.dislike += 1
+    }
+    musica.like = 0
   }
 }
